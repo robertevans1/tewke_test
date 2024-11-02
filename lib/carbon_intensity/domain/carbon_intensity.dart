@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class CarbonIntensity {
   final DateTime from;
   final DateTime to;
@@ -18,5 +20,17 @@ class CarbonIntensity {
       forecastIntensity: json['intensity']['forecast'],
       actualIntensity: json['intensity']['actual'],
     );
+  }
+
+  String get date {
+    return DateFormat('dd/MM/yyyy').format(from);
+  }
+
+  String get fromTime {
+    return DateFormat('HH:mm').format(from);
+  }
+
+  String get toTime {
+    return DateFormat('HH:mm').format(to);
   }
 }
