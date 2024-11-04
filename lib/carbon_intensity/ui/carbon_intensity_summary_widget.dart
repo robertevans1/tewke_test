@@ -5,8 +5,8 @@ import '../domain/carbon_intensity.dart';
 class CarbonIntensitySummaryWidget extends StatelessWidget {
   final CarbonIntensity carbonIntensity;
 
-  const CarbonIntensitySummaryWidget({required this.carbonIntensity, Key? key})
-      : super(key: key);
+  const CarbonIntensitySummaryWidget(
+      {required this.carbonIntensity, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +29,12 @@ class CarbonIntensitySummaryWidget extends StatelessWidget {
                   ),
             ),
             const SizedBox(height: 12),
-            _buildInfoRow('Period',
+            _buildInfoRow('Time period',
                 '${carbonIntensity.fromTime} - ${carbonIntensity.toTime}'),
+            _buildInfoRow('Actual Intensity',
+                '${carbonIntensity.actualIntensity ?? 'N/A'}'),
             _buildInfoRow(
-                'Forecast gCO2/kWh', '${carbonIntensity.forecastIntensity}'),
-            _buildInfoRow(
-                'Actual Intensity', '${carbonIntensity.actualIntensity}'),
+                'Forecast Intensity', '${carbonIntensity.forecastIntensity}'),
           ],
         ),
       ),

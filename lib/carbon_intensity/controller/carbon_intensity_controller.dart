@@ -1,24 +1,69 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tewke_test/carbon_intensity/domain/carbon_intensity_screen_state.dart';
 import 'package:tewke_test/carbon_intensity/repostitory/carbon_intensity_repository.dart';
 
 import '../domain/carbon_intensity.dart';
 
 class CarbonIntensityController
-    extends StateNotifier<AsyncValue<List<CarbonIntensity>>> {
+    extends StateNotifier<CarbonIntensityScreenState> {
   final CarbonIntensityRepository carbonIntensityRepository;
 
-  CarbonIntensityController({required this.carbonIntensityRepository})
-      : super(const AsyncValue.loading()) {
-    getTodaysIntensity();
+  CarbonIntensityController(
+      {required this.carbonIntensityRepository, required DateTime initialDate})
+      : super(CarbonIntensityScreenState(
+            data: const [],
+            date: initialDate,
+            isLoading: true,
+            selectedData: null,
+            error: null)) {
+    getIntensityForDate(initialDate);
   }
 
-  void getTodaysIntensity() async {
-    state = const AsyncValue.loading();
+  void getIntensityForDate(DateTime date) async {
+    state = state.copyWith(isLoading: true, date: date);
     try {
-      final intensity = await carbonIntensityRepository.getTodaysIntensity();
-      state = AsyncValue.data(intensity);
+      final intensity =
+          await carbonIntensityRepository.getIntensityForDate(date);
+
+      // If it is today, set selected data to be now, otherwise midday
+      if (dateIsToday()) {
+        state = state.copyWith(
+            data: intensity,
+            isLoading: false,
+            selectedData: intensity
+                .firstWhere((element) => element.to.isAfter(DateTime.now())));
+      } else {
+        state = state.copyWith(
+            data: intensity,
+            isLoading: false,
+            selectedData: intensity.firstWhere((element) => element.to
+                .isAfter(DateTime(date.year, date.month, date.day, 12))));
+      }
+
+      state = state.copyWith(data: intensity, isLoading: false);
     } catch (e) {
-      state = AsyncValue.error(e, StackTrace.current);
+      state = state.copyWith(isLoading: false, error: e.toString());
     }
+  }
+
+  bool dateIsToday() {
+    final now = DateTime.now();
+    return state.date.year == now.year &&
+        state.date.month == now.month &&
+        state.date.day == now.day;
+  }
+
+  void setSelectedData(CarbonIntensity? data) {
+    state = state.copyWith(selectedData: data);
+  }
+
+  void loadPreviousDay() {
+    final previousDay = state.date.subtract(const Duration(days: 1));
+    getIntensityForDate(previousDay);
+  }
+
+  void loadNextDay() {
+    final nextDay = state.date.add(const Duration(days: 1));
+    getIntensityForDate(nextDay);
   }
 }

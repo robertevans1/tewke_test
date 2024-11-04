@@ -22,4 +22,19 @@ class NesoCarbonIntensityRepository extends CarbonIntensityRepository {
       throw Exception('Failed to load carbon intensity');
     }
   }
+
+  @override
+  Future<List<CarbonIntensity>> getIntensityForDate(DateTime date) {
+    String formattedDate = date.toIso8601String().split('T')[0];
+    final String request = '$todaysIntensityUrl/$formattedDate';
+    return get(Uri.parse(request)).then((response) {
+      if (response.statusCode == 200) {
+        Map<String, dynamic> json = jsonDecode(response.body);
+        return List<CarbonIntensity>.from(
+            json['data'].map((x) => CarbonIntensity.fromJson(x)));
+      } else {
+        throw Exception('Failed to load carbon intensity');
+      }
+    });
+  }
 }
