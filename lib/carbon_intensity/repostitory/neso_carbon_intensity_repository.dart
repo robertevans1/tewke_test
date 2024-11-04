@@ -30,8 +30,16 @@ class NesoCarbonIntensityRepository extends CarbonIntensityRepository {
     return get(Uri.parse(request)).then((response) {
       if (response.statusCode == 200) {
         Map<String, dynamic> json = jsonDecode(response.body);
-        return List<CarbonIntensity>.from(
+        var unfilteredList = List<CarbonIntensity>.from(
             json['data'].map((x) => CarbonIntensity.fromJson(x)));
+
+        // Filter out the data that is not for the requested date
+        return unfilteredList
+            .where((element) =>
+                element.from.year == date.year &&
+                element.from.month == date.month &&
+                element.from.day == date.day)
+            .toList();
       } else {
         throw Exception('Failed to load carbon intensity');
       }

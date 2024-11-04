@@ -10,38 +10,41 @@ class CarbonIntensitySummaryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15),
-      ),
-      elevation: 4,
-      margin: const EdgeInsets.all(16),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Carbon Intensity Summary',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.green[700],
-                  ),
-            ),
-            const SizedBox(height: 12),
-            _buildInfoRow('Time period',
-                '${carbonIntensity.fromTime} - ${carbonIntensity.toTime}'),
-            _buildInfoRow('Actual Intensity',
-                '${carbonIntensity.actualIntensity ?? 'N/A'}'),
-            _buildInfoRow(
-                'Forecast Intensity', '${carbonIntensity.forecastIntensity}'),
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Summary',
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.2,
+                  color: Colors.grey[800],
+                ),
+          ),
+          const SizedBox(height: 12),
+          _buildInfoRow(
+            'Time period',
+            '${carbonIntensity.fromTime} - ${carbonIntensity.toTime}',
+            context,
+          ),
+          _buildInfoRow(
+            'Actual Intensity',
+            '${carbonIntensity.actualIntensity ?? 'N/A'}',
+            context,
+          ),
+          _buildInfoRow(
+            'Forecast Intensity',
+            '${carbonIntensity.forecastIntensity}',
+            context,
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildInfoRow(String label, String value) {
+  Widget _buildInfoRow(String label, String value, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
@@ -49,9 +52,20 @@ class CarbonIntensitySummaryWidget extends StatelessWidget {
         children: [
           Text(
             label,
-            style: const TextStyle(fontWeight: FontWeight.w500),
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              color: Colors.grey[600],
+              fontSize: 14,
+            ),
           ),
-          Text(value),
+          Text(
+            value,
+            style: TextStyle(
+              fontStyle: FontStyle.italic,
+              color: Theme.of(context).colorScheme.primary,
+              fontSize: 14,
+            ),
+          ),
         ],
       ),
     );
