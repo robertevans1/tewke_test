@@ -5,6 +5,7 @@ class CarbonIntensityScreenState {
   final DateTime date;
   final CarbonIntensity? selectedData;
   final bool isLoading;
+  final bool display;
   final String? error;
 
   const CarbonIntensityScreenState({
@@ -12,6 +13,7 @@ class CarbonIntensityScreenState {
     required this.isLoading,
     required this.date,
     required this.selectedData,
+    required this.display,
     this.error,
   });
 
@@ -20,6 +22,7 @@ class CarbonIntensityScreenState {
     DateTime? date,
     CarbonIntensity? selectedData,
     bool? isLoading,
+    bool? display,
     String? error,
   }) {
     return CarbonIntensityScreenState(
@@ -27,6 +30,7 @@ class CarbonIntensityScreenState {
       date: date ?? this.date,
       selectedData: selectedData ?? this.selectedData,
       isLoading: isLoading ?? this.isLoading,
+      display: display ?? this.display,
       error: error,
     );
   }

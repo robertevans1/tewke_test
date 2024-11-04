@@ -6,10 +6,23 @@ import '../domain/carbon_intensity.dart';
 import 'carbon_intensity_repository.dart';
 
 const String baseUrl = 'https://api.carbonintensity.org.uk';
+const String intensityUrl = '$baseUrl/intensity';
 const String todaysIntensityUrl = '$baseUrl/intensity/date';
 
 class NesoCarbonIntensityRepository extends CarbonIntensityRepository {
   NesoCarbonIntensityRepository();
+
+  @override
+  Future<CarbonIntensity> getIntensity() {
+    return get(Uri.parse(intensityUrl)).then((response) {
+      if (response.statusCode == 200) {
+        Map<String, dynamic> json = jsonDecode(response.body);
+        return CarbonIntensity.fromJson(json['data'].first);
+      } else {
+        throw Exception('Failed to load carbon intensity');
+      }
+    });
+  }
 
   @override
   Future<List<CarbonIntensity>> getTodaysIntensity() async {

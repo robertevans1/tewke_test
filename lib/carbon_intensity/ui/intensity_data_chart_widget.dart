@@ -21,12 +21,8 @@ class _IntensityDataChartWidgetState
     extends ConsumerState<IntensityDataChartWidget> {
   int? lastTouchedSpotIndex;
 
-  // final Color line1Color1 = const Color(0xff4af699);
-
   final Color actualIntensityLineColor = const Color(0xff6f5ce7);
-
   final Color line2Color1 = const Color(0xffa4a4a4);
-
   final Color line2Color2 = const Color(0xffdbdbdb);
   final Color sideTitleColor = const Color(0xff7589a2);
   final Color gridLineColor = const Color(0xffb7ceeb);
@@ -236,7 +232,8 @@ class _IntensityDataChartWidgetState
                         setState(() {
                           lastTouchedSpotIndex = element.spotIndex;
                           ref
-                              .read(carbonIntensityControllerProvider.notifier)
+                              .read(historicCarbonIntensityControllerProvider
+                                  .notifier)
                               .setSelectedData(
                                   widget.data[element.spotIndex.toInt()]);
                         });

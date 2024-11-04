@@ -4,16 +4,17 @@ import 'package:tewke_test/carbon_intensity/repostitory/carbon_intensity_reposit
 
 import '../domain/carbon_intensity.dart';
 
-class CarbonIntensityController
+class HistoricCarbonIntensityController
     extends StateNotifier<CarbonIntensityScreenState> {
   final CarbonIntensityRepository carbonIntensityRepository;
 
-  CarbonIntensityController(
+  HistoricCarbonIntensityController(
       {required this.carbonIntensityRepository, required DateTime initialDate})
       : super(CarbonIntensityScreenState(
             data: const [],
             date: initialDate,
             isLoading: true,
+            display: false,
             selectedData: null,
             error: null)) {
     getIntensityForDate(initialDate);
@@ -65,5 +66,9 @@ class CarbonIntensityController
   void loadNextDay() {
     final nextDay = state.date.add(const Duration(days: 1));
     getIntensityForDate(nextDay);
+  }
+
+  void toggleDisplay() {
+    state = state.copyWith(display: !state.display);
   }
 }
