@@ -7,7 +7,7 @@ import 'carbon_intensity_summary_widget.dart';
 import 'intensity_data_chart_widget.dart';
 
 class HistoricDataWidget extends ConsumerWidget {
-  Widget getBody(CarbonIntensityScreenState state) {
+  Widget getContent(CarbonIntensityScreenState state) {
     if (state.isLoading) {
       return const Center(
         child: CircularProgressIndicator(),
@@ -18,8 +18,7 @@ class HistoricDataWidget extends ConsumerWidget {
       return Column(
         children: [
           if (state.data.isNotEmpty) IntensityDataChartWidget(data: state.data),
-          if (state.data.isEmpty)
-            const Center(child: Text('No data available for date')),
+          if (state.data.isEmpty) const Center(child: Text('Data Unavailable')),
           if (state.selectedData != null)
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -41,7 +40,25 @@ class HistoricDataWidget extends ConsumerWidget {
       child: Column(
         children: [
           _DaySelector(),
-          getBody(state),
+          Column(
+            children: [
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  'Forecasted vs Actual carbon intensity in the UK on the selected date. Tap the chart for a detailed summary at a particular time.',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.black87,
+                    height: 1.5,
+                    letterSpacing: 0.5,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              const SizedBox(height: 16),
+              getContent(state),
+            ],
+          ),
         ],
       ),
     );

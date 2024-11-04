@@ -160,17 +160,6 @@ class _IntensityDataChartWidgetState
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
-          const Text(
-            'Forecasted vs Actual Intensity of carbon in the UK on the selected date. Tap the chart for a detailed summary at a particular time. Intensity is measured in gCO2/kWh.',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.black87,
-              height: 1.5,
-              letterSpacing: 0.5,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 16),
           AspectRatio(
             aspectRatio: 2,
             child: LineChart(
